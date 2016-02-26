@@ -62,7 +62,7 @@ MERGED from [com.android.support:cardview-v7:23.2.0] /media/Other/Dropbox/Progra
 	android:icon
 		ADDED from /media/Other/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/src/main/AndroidManifest.xml:13:9-43
 	android:theme
-		ADDED from /media/Other/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/src/main/AndroidManifest.xml:15:9-43
+		ADDED from /media/Other/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/src/main/AndroidManifest.xml:15:9-40
 activity#si.vei.pedram.xyzreader.ui.ArticleListActivity
 ADDED from /media/Other/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/src/main/AndroidManifest.xml:17:9-24:20
 	android:label
