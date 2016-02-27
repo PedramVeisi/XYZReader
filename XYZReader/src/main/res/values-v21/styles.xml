@@ -1,0 +1,8 @@
+<resources>
+
+    <!-- Make status bar transparent in details activity-->
+    <style name="AppTheme.Details" parent="AppTheme.Base">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+</resources>
