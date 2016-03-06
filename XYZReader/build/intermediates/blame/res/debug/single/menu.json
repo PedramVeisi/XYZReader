@@ -1,5 +1,9 @@
 [
     {
+        "merged": "/home/pedram/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/build/intermediates/res/merged/debug/menu/main.xml",
+        "source": "/home/pedram/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/src/main/res/menu/main.xml"
+    },
+    {
         "merged": "/media/Other/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/build/intermediates/res/merged/debug/menu/main.xml",
         "source": "/media/Other/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/src/main/res/menu/main.xml"
     }

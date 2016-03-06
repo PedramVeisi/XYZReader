@@ -29,7 +29,8 @@
         </activity>
         <activity
             android:name="si.vei.pedram.xyzreader.ui.ArticleDetailActivity"
-            android:parentActivityName="si.vei.pedram.xyzreader.ui.ArticleListActivity" >
+            android:parentActivityName="si.vei.pedram.xyzreader.ui.ArticleListActivity"
+            android:theme="@style/AppTheme.Details" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
