@@ -2,16 +2,13 @@ package si.vei.pedram.xyzreader.ui;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
-import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.ShareCompat;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -56,7 +53,7 @@ public class ArticleDetailFragment extends Fragment implements
     private int mScrollY;
     private boolean mIsCard = false;
     private int mStatusBarFullOpacityBottom;
-    private Toolbar toolbar;
+    private Toolbar mToolbar;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -180,7 +177,7 @@ public class ArticleDetailFragment extends Fragment implements
             return;
         }
 
-        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
         mPhotoView = (ImageView) getActivity().findViewById(R.id.photo);
         TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
@@ -193,7 +190,7 @@ public class ArticleDetailFragment extends Fragment implements
             mRootView.setVisibility(View.VISIBLE);
             mRootView.animate().alpha(1);
             //titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
-            toolbar.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
+            mToolbar.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
             bylineView.setText(Html.fromHtml(
                     DateUtils.getRelativeTimeSpanString(
                             mCursor.getLong(ArticleLoader.Query.PUBLISHED_DATE),
