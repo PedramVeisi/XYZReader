@@ -13,16 +13,17 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -46,11 +47,9 @@ public class ArticleDetailFragment extends Fragment implements
     private Cursor mCursor;
     private long mItemId;
     private View mRootView;
-    private ColorDrawable mStatusBarColorDrawable;
 
     private ImageView mPhotoView;
 
-    private boolean mIsCard = false;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
 
     /**
@@ -76,8 +75,6 @@ public class ArticleDetailFragment extends Fragment implements
             mItemId = getArguments().getLong(ARG_ITEM_ID);
         }
 
-        mIsCard = getResources().getBoolean(R.bool.detail_is_card);
-
         setHasOptionsMenu(true);
     }
 
@@ -102,18 +99,25 @@ public class ArticleDetailFragment extends Fragment implements
 
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
 
-        mStatusBarColorDrawable = new ColorDrawable(0);
-
         mCollapsingToolbarLayout =
                 (CollapsingToolbarLayout) mRootView.findViewById(R.id.collapsing_toolbar);
 
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
 
         Toolbar toolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
-        getActivityCast().setSupportActionBar(toolbar);
-        getActivityCast().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        setHasOptionsMenu(true);
+        // This didn't work for the up button
+        //((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // This works! Why?!
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
 
         bindViews();
 
