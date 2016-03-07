@@ -49,7 +49,6 @@ public class ArticleDetailFragment extends Fragment implements
     private ImageView mPhotoView;
 
     private boolean mIsCard = false;
-    private CollapsingToolbarLayout mCollapsingToolbar;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -111,9 +110,10 @@ public class ArticleDetailFragment extends Fragment implements
             return;
         }
 
-        mCollapsingToolbar = (CollapsingToolbarLayout) getActivity().findViewById(R.id.collapsing_toolbar);
+        CollapsingToolbarLayout collapsingToolbarLayout =
+                (CollapsingToolbarLayout) mRootView.findViewById(R.id.collapsing_toolbar);
 
-        mPhotoView = (ImageView) getActivity().findViewById(R.id.photo);
+        mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
 
         TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
         bylineView.setMovementMethod(new LinkMovementMethod());
@@ -124,7 +124,7 @@ public class ArticleDetailFragment extends Fragment implements
             mRootView.setAlpha(0);
             mRootView.setVisibility(View.VISIBLE);
             mRootView.animate().alpha(1);
-            mCollapsingToolbar.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
+            collapsingToolbarLayout.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
             bylineView.setText(Html.fromHtml(
                     DateUtils.getRelativeTimeSpanString(
                             mCursor.getLong(ArticleLoader.Query.PUBLISHED_DATE),
@@ -136,6 +136,11 @@ public class ArticleDetailFragment extends Fragment implements
             bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY)));
 
             final String photoUrl = mCursor.getString(ArticleLoader.Query.PHOTO_URL);
+
+            Log.e("DetailFragment", mCursor.getString(ArticleLoader.Query.TITLE));
+            Log.e("DetailFragment", mCursor.getString(ArticleLoader.Query.AUTHOR));
+            Log.e("DetailFragment", mCursor.getString(ArticleLoader.Query.PHOTO_URL));
+
 
             if (!photoUrl.isEmpty()) {
                 Picasso.with(getActivity()).load(photoUrl).into(mPhotoView);
