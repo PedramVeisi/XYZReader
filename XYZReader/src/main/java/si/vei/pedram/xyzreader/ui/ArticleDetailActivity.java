@@ -26,10 +26,6 @@ public class ArticleDetailActivity extends ActionBarActivity
     private Cursor mCursor;
     private long mStartId;
 
-    private long mSelectedItemId;
-    private int mSelectedItemUpButtonFloor = Integer.MAX_VALUE;
-    private int mTopInset;
-
     private ViewPager mPager;
     private MyPagerAdapter mPagerAdapter;
     private Toolbar mToolbar;
@@ -68,7 +64,7 @@ public class ArticleDetailActivity extends ActionBarActivity
         if (savedInstanceState == null) {
             if (getIntent() != null && getIntent().getData() != null) {
                 mStartId = ItemsContract.Items.getItemId(getIntent().getData());
-                mSelectedItemId = mStartId;
+                //mSelectedItemId = mStartId;
             }
         }
     }
