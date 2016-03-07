@@ -37,7 +37,6 @@ import si.vei.pedram.xyzreader.data.UpdaterService;
 public class ArticleListActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    private Toolbar mToolbar;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
 
@@ -45,11 +44,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_list);
-
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-
-
-        //final View toolbarContainerView = findViewById(R.id.toolbar_container);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 
@@ -155,11 +149,6 @@ public class ArticleListActivity extends AppCompatActivity implements
                             DateUtils.FORMAT_ABBREV_ALL).toString()
                             + " by "
                             + mCursor.getString(ArticleLoader.Query.AUTHOR));
-//            holder.thumbnailView.setImageUrl(
-//                    mCursor.getString(ArticleLoader.Query.THUMB_URL),
-//                    ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
-//            holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
-
 
             Picasso.with(mContext).load(mCursor.getString(ArticleLoader.Query.THUMB_URL))
                     .into(holder.thumbnailView);
