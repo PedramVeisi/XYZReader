@@ -8,8 +8,12 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.view.OnApplyWindowInsetsListener;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.WindowInsetsCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -20,7 +24,7 @@ import si.vei.pedram.xyzreader.data.ItemsContract;
 /**
  * An activity representing a single Article detail screen, letting you swipe between articles.
  */
-public class ArticleDetailActivity extends ActionBarActivity
+public class ArticleDetailActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private Cursor mCursor;
@@ -56,9 +60,30 @@ public class ArticleDetailActivity extends ActionBarActivity
             }
         });
 
-//        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(mToolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Solve the problem with non-transparent status bar. More info:
+        // http://stackoverflow.com/questions/31368781/coordinatorlayout-status-bar-padding-disappears-from-viewpager-2nd-page/35132144#35132144
+        // https://code.google.com/p/android/issues/detail?id=180492
+        ViewCompat.setOnApplyWindowInsetsListener(mPager,
+                new OnApplyWindowInsetsListener() {
+                    @Override
+                    public WindowInsetsCompat onApplyWindowInsets(View v,
+                                                                  WindowInsetsCompat insets) {
+                        insets = ViewCompat.onApplyWindowInsets(v, insets);
+                        if (insets.isConsumed()) {
+                            return insets;
+                        }
+
+                        boolean consumed = false;
+                        for (int i = 0, count = mPager.getChildCount(); i < count; i++) {
+                            ViewCompat.dispatchApplyWindowInsets(mPager.getChildAt(i), insets);
+                            if (insets.isConsumed()) {
+                                consumed = true;
+                            }
+                        }
+                        return consumed ? insets.consumeSystemWindowInsets() : insets;
+                    }
+                });
 
         if (savedInstanceState == null) {
             if (getIntent() != null && getIntent().getData() != null) {

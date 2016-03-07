@@ -10,6 +10,8 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -49,6 +51,7 @@ public class ArticleDetailFragment extends Fragment implements
     private ImageView mPhotoView;
 
     private boolean mIsCard = false;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -96,9 +99,21 @@ public class ArticleDetailFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
 
         mStatusBarColorDrawable = new ColorDrawable(0);
+
+        mCollapsingToolbarLayout =
+                (CollapsingToolbarLayout) mRootView.findViewById(R.id.collapsing_toolbar);
+
+        mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
+
+        Toolbar toolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
+        getActivityCast().setSupportActionBar(toolbar);
+        getActivityCast().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setHasOptionsMenu(true);
 
         bindViews();
 
@@ -110,11 +125,6 @@ public class ArticleDetailFragment extends Fragment implements
             return;
         }
 
-        CollapsingToolbarLayout collapsingToolbarLayout =
-                (CollapsingToolbarLayout) mRootView.findViewById(R.id.collapsing_toolbar);
-
-        mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
-
         TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
         bylineView.setMovementMethod(new LinkMovementMethod());
         TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
@@ -124,7 +134,7 @@ public class ArticleDetailFragment extends Fragment implements
             mRootView.setAlpha(0);
             mRootView.setVisibility(View.VISIBLE);
             mRootView.animate().alpha(1);
-            collapsingToolbarLayout.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
+            mCollapsingToolbarLayout.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
             bylineView.setText(Html.fromHtml(
                     DateUtils.getRelativeTimeSpanString(
                             mCursor.getLong(ArticleLoader.Query.PUBLISHED_DATE),
@@ -136,11 +146,6 @@ public class ArticleDetailFragment extends Fragment implements
             bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY)));
 
             final String photoUrl = mCursor.getString(ArticleLoader.Query.PHOTO_URL);
-
-            Log.e("DetailFragment", mCursor.getString(ArticleLoader.Query.TITLE));
-            Log.e("DetailFragment", mCursor.getString(ArticleLoader.Query.AUTHOR));
-            Log.e("DetailFragment", mCursor.getString(ArticleLoader.Query.PHOTO_URL));
-
 
             if (!photoUrl.isEmpty()) {
                 Picasso.with(getActivity()).load(photoUrl).into(mPhotoView);
