@@ -5,9 +5,11 @@ import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Typeface;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.widget.Toolbar;
@@ -18,10 +20,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.RequestCreator;
 
 import si.vei.pedram.xyzreader.R;
 import si.vei.pedram.xyzreader.data.ArticleLoader;
@@ -33,19 +38,36 @@ import si.vei.pedram.xyzreader.data.ArticleLoader;
  */
 public class ArticleDetailFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
-    private static final String TAG = "ArticleDetailFragment";
+    private static final String TAG = ArticleDetailFragment.class.getSimpleName();
 
     public static final String ARG_ITEM_ID = "item_id";
-    public static final String ARG_POSITION = "item_position" +
-            "";
+
+    private static final String ARG_ARTICLE_IMAGE_POSITION = "arg_article_image_position";
+    private static final String ARG_STARTING_ARTICLE_IMAGE_POSITION = "arg_starting_article_image_position";
+
+    private final Callback mImageCallback = new Callback() {
+        @Override
+        public void onSuccess() {
+            startPostponedEnterTransition();
+        }
+
+        @Override
+        public void onError() {
+            startPostponedEnterTransition();
+        }
+    };
+
     private Cursor mCursor;
     private long mItemId;
-    private int mItemPosition;
     private View mRootView;
 
     private ImageView mPhotoView;
 
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
+
+    private int mStartingPosition;
+    private int mArticlePosition;
+    private boolean mIsTransitioning;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -54,10 +76,11 @@ public class ArticleDetailFragment extends Fragment implements
     public ArticleDetailFragment() {
     }
 
-    public static ArticleDetailFragment newInstance(long itemId, int position) {
+    public static ArticleDetailFragment newInstance(long itemId, int position, int startingPosition) {
         Bundle arguments = new Bundle();
-        arguments.putInt(ARG_POSITION, position);
         arguments.putLong(ARG_ITEM_ID, itemId);
+        arguments.putInt(ARG_ARTICLE_IMAGE_POSITION, position);
+        arguments.putInt(ARG_STARTING_ARTICLE_IMAGE_POSITION, startingPosition);
         ArticleDetailFragment fragment = new ArticleDetailFragment();
         fragment.setArguments(arguments);
         return fragment;
@@ -70,17 +93,11 @@ public class ArticleDetailFragment extends Fragment implements
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             mItemId = getArguments().getLong(ARG_ITEM_ID);
         }
-        if (getArguments().containsKey(ARG_POSITION)) {
-            mItemPosition = getArguments().getInt(ARG_POSITION);
-            Log.e("HERE", "HERE " + mItemPosition);
 
-        }
+        mStartingPosition = getArguments().getInt(ARG_STARTING_ARTICLE_IMAGE_POSITION);
+        mArticlePosition = getArguments().getInt(ARG_ARTICLE_IMAGE_POSITION);
+        mIsTransitioning = savedInstanceState == null && mStartingPosition == mArticlePosition;
 
-        setHasOptionsMenu(true);
-    }
-
-    public ArticleDetailActivity getActivityCast() {
-        return (ArticleDetailActivity) getActivity();
     }
 
     @Override
@@ -104,11 +121,9 @@ public class ArticleDetailFragment extends Fragment implements
                 (CollapsingToolbarLayout) mRootView.findViewById(R.id.collapsing_toolbar);
 
         mPhotoView = (ImageView) mRootView.findViewById(R.id.detail_toolbar_photo);
-
-        if (Build.VERSION.SDK_INT > 21) {
-            mPhotoView.setTransitionName(getString(R.string.article_photo_transition_name) + String.valueOf(mItemPosition));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mPhotoView.setTransitionName(getString(R.string.article_photo_transition_name) + mArticlePosition);
         }
-
 
         Toolbar toolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
 
@@ -177,7 +192,15 @@ public class ArticleDetailFragment extends Fragment implements
             final String photoUrl = mCursor.getString(ArticleLoader.Query.PHOTO_URL);
 
             if (!photoUrl.isEmpty()) {
-                Picasso.with(getActivity()).load(photoUrl).into(mPhotoView);
+
+                RequestCreator articleImageRequest = Picasso.with(getActivity()).load(photoUrl);
+
+                if (mIsTransitioning) {
+                    articleImageRequest.noFade();
+                }
+
+                articleImageRequest.into(mPhotoView, mImageCallback);
+
             } else {
                 mPhotoView.setImageResource(R.drawable.empty_detail);
             }
@@ -189,6 +212,20 @@ public class ArticleDetailFragment extends Fragment implements
         }
     }
 
+    private void startPostponedEnterTransition() {
+        if (mArticlePosition == mStartingPosition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mPhotoView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    mPhotoView.getViewTreeObserver().removeOnPreDrawListener(this);
+                    getActivity().startPostponedEnterTransition();
+                    return true;
+                }
+            });
+        }
+    }
+
+
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return ArticleLoader.newInstanceForItemId(getActivity(), mItemId);
@@ -196,9 +233,6 @@ public class ArticleDetailFragment extends Fragment implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-
-        ((ArticleDetailActivity)getActivity()).scheduleStartPostponedTransition(mPhotoView);
-
         if (!isAdded()) {
             if (cursor != null) {
                 cursor.close();
@@ -222,4 +256,20 @@ public class ArticleDetailFragment extends Fragment implements
         bindViews();
     }
 
+    @Nullable
+    ImageView getHeaderImage() {
+        if (isViewInBounds(getActivity().getWindow().getDecorView(), mPhotoView)) {
+            return mPhotoView;
+        }
+        return null;
+    }
+
+    /**
+     * Returns true if {@param view} is contained within {@param container}'s bounds.
+     */
+    private static boolean isViewInBounds(@NonNull View container, @NonNull View view) {
+        Rect containerBounds = new Rect();
+        container.getHitRect(containerBounds);
+        return view.getLocalVisibleRect(containerBounds);
+    }
 }
