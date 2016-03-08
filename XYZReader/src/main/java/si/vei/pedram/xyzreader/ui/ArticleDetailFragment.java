@@ -93,7 +93,7 @@ public class ArticleDetailFragment extends Fragment implements
         mCollapsingToolbarLayout =
                 (CollapsingToolbarLayout) mRootView.findViewById(R.id.collapsing_toolbar);
 
-        mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
+        mPhotoView = (ImageView) mRootView.findViewById(R.id.detail_toolbar_photo);
 
         Toolbar toolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
 
