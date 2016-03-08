@@ -142,10 +142,6 @@ public class ArticleListActivity extends AppCompatActivity implements
                                 vh.thumbnailView.getTransitionName())
                                 .toBundle();
 
-                        // Send the shareTransitionName to detail activity
-                        intent.putExtra(ArticleDetailFragment.ARG_POSITION, view.findViewById(R.id.thumbnail)
-                                .getTransitionName());
-
                         startActivity(intent, bundle);
                     }
                 }

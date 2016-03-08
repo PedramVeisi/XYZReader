@@ -89,7 +89,6 @@ public class ArticleDetailActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             if (getIntent() != null && getIntent().getData() != null) {
                 mStartId = ItemsContract.Items.getItemId(getIntent().getData());
-                //mSelectedItemId = mStartId;
             }
         }
     }
@@ -146,8 +145,7 @@ public class ArticleDetailActivity extends AppCompatActivity
         @Override
         public Fragment getItem(int position) {
             mCursor.moveToPosition(position);
-            // Send position to the fragment for managing share element transition
-            return ArticleDetailFragment.newInstance(mCursor.getLong(ArticleLoader.Query._ID), position);
+            return ArticleDetailFragment.newInstance(mCursor.getLong(ArticleLoader.Query._ID));
         }
 
         @Override
