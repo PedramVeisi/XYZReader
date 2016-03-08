@@ -5,6 +5,7 @@ import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
@@ -123,7 +124,6 @@ public class ArticleDetailFragment extends Fragment implements
         TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
         bylineView.setMovementMethod(new LinkMovementMethod());
         TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
-        bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
 
         if (mCursor != null) {
             mRootView.setAlpha(0);
@@ -139,6 +139,16 @@ public class ArticleDetailFragment extends Fragment implements
                             + mCursor.getString(ArticleLoader.Query.AUTHOR)
                             + "</font>"));
             bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY)));
+
+            // Font size and color are set in xml but they don't work and I have to do it
+            // dynamically! Why?!
+            if (Build.VERSION.SDK_INT < 23) {
+                bodyView.setTextAppearance(getActivity(), android.R.style.TextAppearance_Small);
+                bodyView.setTextColor(getResources().getColor(R.color.textColorPrimary));
+            } else {
+                bodyView.setTextAppearance(android.R.style.TextAppearance_Small);
+                bodyView.setTextColor(getActivity().getColor(R.color.textColorPrimary));
+            }
 
             final String photoUrl = mCursor.getString(ArticleLoader.Query.PHOTO_URL);
 
