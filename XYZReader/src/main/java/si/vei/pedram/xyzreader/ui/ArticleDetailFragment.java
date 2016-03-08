@@ -40,7 +40,6 @@ public class ArticleDetailFragment extends Fragment implements
             "";
     private Cursor mCursor;
     private long mItemId;
-    private int mItemPosition;
     private View mRootView;
 
     private ImageView mPhotoView;
@@ -54,9 +53,8 @@ public class ArticleDetailFragment extends Fragment implements
     public ArticleDetailFragment() {
     }
 
-    public static ArticleDetailFragment newInstance(long itemId, int position) {
+    public static ArticleDetailFragment newInstance(long itemId) {
         Bundle arguments = new Bundle();
-        arguments.putInt(ARG_POSITION, position);
         arguments.putLong(ARG_ITEM_ID, itemId);
         ArticleDetailFragment fragment = new ArticleDetailFragment();
         fragment.setArguments(arguments);
@@ -69,11 +67,6 @@ public class ArticleDetailFragment extends Fragment implements
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             mItemId = getArguments().getLong(ARG_ITEM_ID);
-        }
-        if (getArguments().containsKey(ARG_POSITION)) {
-            mItemPosition = getArguments().getInt(ARG_POSITION);
-            Log.e("HERE", "HERE " + mItemPosition);
-
         }
 
         setHasOptionsMenu(true);
@@ -104,11 +97,6 @@ public class ArticleDetailFragment extends Fragment implements
                 (CollapsingToolbarLayout) mRootView.findViewById(R.id.collapsing_toolbar);
 
         mPhotoView = (ImageView) mRootView.findViewById(R.id.detail_toolbar_photo);
-
-        if (Build.VERSION.SDK_INT > 21) {
-            mPhotoView.setTransitionName(getString(R.string.article_photo_transition_name) + String.valueOf(mItemPosition));
-        }
-
 
         Toolbar toolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
 
