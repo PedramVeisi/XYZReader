@@ -1,15 +1,7 @@
 [
     {
-        "merged": "/home/pedram/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/build/intermediates/res/merged/debug/anim-v21/design_bottom_sheet_slide_in.xml",
-        "source": "/home/pedram/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/build/intermediates/exploded-aar/com.android.support/design/23.2.0/res/anim-v21/design_bottom_sheet_slide_in.xml"
-    },
-    {
         "merged": "/media/Other/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/build/intermediates/res/merged/debug/anim-v21/design_bottom_sheet_slide_out.xml",
         "source": "/media/Other/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/build/intermediates/exploded-aar/com.android.support/design/23.2.0/res/anim-v21/design_bottom_sheet_slide_out.xml"
-    },
-    {
-        "merged": "/home/pedram/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/build/intermediates/res/merged/debug/anim-v21/design_bottom_sheet_slide_out.xml",
-        "source": "/home/pedram/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/build/intermediates/exploded-aar/com.android.support/design/23.2.0/res/anim-v21/design_bottom_sheet_slide_out.xml"
     },
     {
         "merged": "/media/Other/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/build/intermediates/res/merged/debug/anim-v21/design_bottom_sheet_slide_in.xml",
@@ -18,9 +10,5 @@
     {
         "merged": "/media/Other/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/build/intermediates/res/merged/debug/anim-v21/fab_state_list_anim.xml",
         "source": "/media/Other/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/src/main/res/anim-v21/fab_state_list_anim.xml"
-    },
-    {
-        "merged": "/home/pedram/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/build/intermediates/res/merged/debug/anim-v21/fab_state_list_anim.xml",
-        "source": "/home/pedram/Dropbox/Programming/AndroidWorkspace/xyzreader/XYZReader/src/main/res/anim-v21/fab_state_list_anim.xml"
     }
 ]
