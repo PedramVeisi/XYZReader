@@ -141,6 +141,11 @@ public class ArticleListActivity extends AppCompatActivity implements
                                 vh.thumbnailView,
                                 vh.thumbnailView.getTransitionName())
                                 .toBundle();
+
+                        // Send the shareTransitionName to detail activity
+                        intent.putExtra(ArticleDetailFragment.ARG_POSITION, view.findViewById(R.id.thumbnail)
+                                .getTransitionName());
+
                         startActivity(intent, bundle);
                     }
                 }
@@ -151,6 +156,12 @@ public class ArticleListActivity extends AppCompatActivity implements
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             mCursor.moveToPosition(position);
+
+            // Add position to the sharedTransitionName in order to prevent view pager from messing up the transition
+            if (Build.VERSION.SDK_INT > 21) {
+                holder.thumbnailView.setTransitionName(getString(R.string.article_photo_transition_name) + position);
+            }
+
             holder.titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
             holder.subtitleView.setText(
                     DateUtils.getRelativeTimeSpanString(
