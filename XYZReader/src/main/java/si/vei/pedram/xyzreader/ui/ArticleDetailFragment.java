@@ -72,8 +72,6 @@ public class ArticleDetailFragment extends Fragment implements
         }
         if (getArguments().containsKey(ARG_POSITION)) {
             mItemPosition = getArguments().getInt(ARG_POSITION);
-            Log.e("HERE", "HERE " + mItemPosition);
-
         }
 
         setHasOptionsMenu(true);
@@ -184,7 +182,7 @@ public class ArticleDetailFragment extends Fragment implements
 
         } else {
             mRootView.setVisibility(View.GONE);
-            bylineView.setText("N/A" );
+            bylineView.setText("N/A");
             bodyView.setText("N/A");
         }
     }
@@ -196,6 +194,9 @@ public class ArticleDetailFragment extends Fragment implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+
+        ((ArticleDetailActivity)getActivity()).scheduleStartPostponedTransition(mPhotoView);
+
         if (!isAdded()) {
             if (cursor != null) {
                 cursor.close();
