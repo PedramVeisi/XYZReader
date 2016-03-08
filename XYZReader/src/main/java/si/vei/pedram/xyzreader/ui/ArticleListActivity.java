@@ -1,6 +1,5 @@
 package si.vei.pedram.xyzreader.ui;
 
-import android.app.ActivityOptions;
 import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,8 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +20,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
+import java.util.Map;
 
 import si.vei.pedram.xyzreader.R;
 import si.vei.pedram.xyzreader.data.ArticleLoader;
@@ -133,16 +135,12 @@ public class ArticleListActivity extends AppCompatActivity implements
                     Intent intent = new Intent(Intent.ACTION_VIEW,
                             ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition())));
 
-                    if (Build.VERSION.SDK_INT < 21) {
-                        startActivity(intent);
-                    } else {
-                        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(
-                                ArticleListActivity.this,
-                                vh.thumbnailView,
-                                vh.thumbnailView.getTransitionName())
-                                .toBundle();
-                        startActivity(intent, bundle);
-                    }
+                    Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            ArticleListActivity.this,
+                            vh.thumbnailView,
+                            vh.thumbnailView.getTransitionName())
+                            .toBundle();
+                    startActivity(intent, bundle);
                 }
             });
             return vh;
