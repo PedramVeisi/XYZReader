@@ -179,16 +179,6 @@ public class ArticleDetailFragment extends Fragment implements
                             + "</font>"));
             bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY)));
 
-            // Font size and color are set in xml but they don't work and I have to do it
-            // dynamically! Why?!
-            if (Build.VERSION.SDK_INT < 23) {
-                bodyView.setTextAppearance(getActivity(), android.R.style.TextAppearance_Small);
-                bodyView.setTextColor(getResources().getColor(R.color.textColorPrimary));
-            } else {
-                bodyView.setTextAppearance(android.R.style.TextAppearance_Small);
-                bodyView.setTextColor(getActivity().getColor(R.color.textColorPrimary));
-            }
-
             final String photoUrl = mCursor.getString(ArticleLoader.Query.PHOTO_URL);
 
             if (!photoUrl.isEmpty()) {
