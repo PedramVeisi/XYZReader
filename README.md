@@ -2,7 +2,7 @@
 
 Project 5 - Udacity [**"Android Developer Nanodegree"**](https://www.udacity.com/course/android-developer-nanodegree--nd801) - Material Design
 
-# Features
+## Features
 
 - App uses the Design Support library and its provided widget types (FloatingActionButton, AppBarLayout, SnackBar, etc).
 
