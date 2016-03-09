@@ -30,7 +30,7 @@ Project 5 - Udacity [**"Android Developer Nanodegree"**](https://www.udacity.com
 
 - Shared element transitions between main activity and detail activity
 
-## Screencat
+## Screencast
 
 <img src="/../screenshots/Screenshots/screencast.gif?raw=true" alt="Screencast" width="350" />
 
